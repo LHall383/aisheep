@@ -160,4 +160,71 @@ describe("AI Test", function() {
       expect(IsPlayable(board, r, c)).toBe(false);
     });
   });
+
+  describe("Check win conditions", function() {
+    it("should return true if 3 friendly pieces are in a row on bottom row", function() {
+      var board = [
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "P", "P", "P", "null", "null"]
+      ];
+      expect(checkHorizontalWin(board, "P").found).toBe(true);
+      expect(checkHorizontalWin(board, "P").column).toBe(1);
+    });
+
+    it("should return true if 3 friendly pieces are in a row on middle rows", function() {
+      var board = [
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "P", "P", "P", "null", "null", "null"],
+        ["null", "P", "C", "C", "P", "null", "null"]
+      ];
+      expect(checkHorizontalWin(board, "P").found).toBe(true);
+      expect(checkHorizontalWin(board, "P").column).toBe(4);
+    });
+
+    it("should return true if 3 of 4 horizontal spaces are friendly on bottom row", function() {
+      var board = [
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "P", "P", "null", "P", "null"]
+      ];
+      expect(checkHorizontalWin(board, "P").found).toBe(true);
+      expect(checkHorizontalWin(board, "P").column).toBe(4);
+    });
+
+    it("should return true if 3 of 4 horizontal spaces are friendly on middle rows", function() {
+      var board = [
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "P", "null", "P", "P", "null"],
+        ["null", "null", "P", "P", "C", "C", "C"]
+      ];
+      expect(checkHorizontalWin(board, "P").found).toBe(true);
+      expect(checkHorizontalWin(board, "P").column).toBe(3);
+    });
+
+    it("should return false if a friendly horizontal win condition is not present", function() {
+      var board = [
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "P"],
+        ["null", "P", "C", "P", "P", "null", "C"]
+      ];
+      expect(checkHorizontalWin(board, "P").found).toBe(false);
+      expect(checkHorizontalWin(board, "P").column).toBe(0);
+    });
+  });
 });

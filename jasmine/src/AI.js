@@ -7,9 +7,12 @@
 // (function bot(board) {
 // })(readline());
 
+var ROW_SIZE = 6;
+var COLUMN_SIZE = 7;
+
 function InBorders(row, column)
 {
-    if(row>=0 && row<6 && column>=0 && column<7)
+    if(row>=0 && row<ROW_SIZE && column>=0 && column<COLUMN_SIZE)
     {
         return true;
     }else{
@@ -23,12 +26,12 @@ function IsPlayable(boardToUse, row, column)
     {
       return false;
     }
-    if(row===5 && column>=0 && column<7)
+    if(row===ROW_SIZE-1 && column>=0 && column<COLUMN_SIZE)
     {
         if(boardToUse[row][column]=="null")
             return true;
     }
-    if(row>=0 && row<5 && column>=0 && column<7)
+    if(row>=0 && row<ROW_SIZE-1 && column>=0 && column<COLUMN_SIZE)
     {
         if(boardToUse[row+1][column]!="null" && boardToUse[row][column]=="null")
         {
@@ -37,4 +40,46 @@ function IsPlayable(boardToUse, row, column)
     }
 
     return false;
+}
+
+function checkHorizontalWin(boardToUse, pieceToFind)
+{
+  //iterate through rows
+  for(var r = 0; r < ROW_SIZE; r++)
+  {
+    //iterate through columns
+    for(var c = 0; c < 4; c++)
+    {
+      var count = 0; //count how many pieces are found
+      var cEmpty = "null"; //column of win position
+
+      //iterate through 4 spaces
+      for(var cDelta = 0; cDelta < 4; cDelta++)
+      {
+        //if piece is found, increase count
+        if(boardToUse[r][c+cDelta] == pieceToFind)
+        {
+          count++;
+        }
+        //if space is empty, save the column of that space
+        if(boardToUse[r][c+cDelta] == "null")
+        {
+          cEmpty = c+cDelta;
+        }
+      }
+      //if 3 of 4 are taken and the remaining space is playable, return true
+      if(count == 3 && IsPlayable(boardToUse, r, cEmpty) == true)
+      {
+        return {
+          found: true,
+          column: cEmpty
+        };
+      }
+    }
+  }
+  //win not found, return false
+  return{
+    found: false,
+    column: 0
+  }
 }
