@@ -162,6 +162,7 @@ describe("AI Test", function() {
   });
 
   describe("Check win conditions", function() {
+    //Tests for checkHorizontalWin function
     it("should return true if 3 friendly pieces are in a row on bottom row", function() {
       var board = [
         ["null", "null", "null", "null", "null", "null", "null"],
@@ -225,6 +226,65 @@ describe("AI Test", function() {
       ];
       expect(checkHorizontalWin(board, "P").found).toBe(false);
       expect(checkHorizontalWin(board, "P").column).toBe(0);
+    });
+
+    //tests for checkVerticalWin function
+    it("should return true for 3 friendly pieces in a stack", function() {
+      var board = [
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"]
+      ];
+      var c = Math.floor(Math.random(COLUMN_MAX));
+      for(var r = ROW_MAX - 1; r > 2; r--)
+      {
+        board[r][c] = "P";
+      }
+      expect(checkVerticalWin(board, "P").found).toBe(true);
+      expect(checkVerticalWin(board, "P").column).toBe(c);
+    });
+
+    it("should return false for 2 friendly pieces in a stack", function() {
+      var board = [
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"]
+      ];
+      var c = Math.floor(Math.random(COLUMN_MAX));
+      for(var r = ROW_MAX - 1; r > 3; r--)
+      {
+        board[r][c] = "P";
+      }
+      expect(checkVerticalWin(board, "P").found).toBe(false);
+      expect(checkVerticalWin(board, "P").column).toBe(1);
+    });
+
+    it("should return false for 3 friendly pieces in a stack topped by enemy piece", function() {
+      var board = [
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"],
+        ["null", "null", "null", "null", "null", "null", "null"]
+      ];
+      var c = Math.floor(Math.random(COLUMN_MAX));
+      for(var r = ROW_MAX - 1; r > 1; r--)
+      {
+        board[r][c] = "P";
+        if(r == 2)
+        {
+          board[r][c] = "C";
+        }
+      }
+      expect(checkVerticalWin(board, "P").found).toBe(false);
+      expect(checkVerticalWin(board, "P").column).toBe(1);
     });
   });
 });

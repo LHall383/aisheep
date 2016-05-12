@@ -7,12 +7,12 @@
 // (function bot(board) {
 // })(readline());
 
-var ROW_SIZE = 6;
-var COLUMN_SIZE = 7;
+var ROW_MAX = 6;
+var COLUMN_MAX = 7;
 
 function InBorders(row, column)
 {
-    if(row>=0 && row<ROW_SIZE && column>=0 && column<COLUMN_SIZE)
+    if(row>=0 && row<ROW_MAX && column>=0 && column<COLUMN_MAX)
     {
         return true;
     }else{
@@ -26,12 +26,12 @@ function IsPlayable(boardToUse, row, column)
     {
       return false;
     }
-    if(row===ROW_SIZE-1 && column>=0 && column<COLUMN_SIZE)
+    if(row===ROW_MAX-1 && column>=0 && column<COLUMN_MAX)
     {
         if(boardToUse[row][column]=="null")
             return true;
     }
-    if(row>=0 && row<ROW_SIZE-1 && column>=0 && column<COLUMN_SIZE)
+    if(row>=0 && row<ROW_MAX-1 && column>=0 && column<COLUMN_MAX)
     {
         if(boardToUse[row+1][column]!="null" && boardToUse[row][column]=="null")
         {
@@ -45,7 +45,7 @@ function IsPlayable(boardToUse, row, column)
 function checkHorizontalWin(boardToUse, pieceToFind)
 {
   //iterate through rows
-  for(var r = 0; r < ROW_SIZE; r++)
+  for(var r = 0; r < ROW_MAX; r++)
   {
     //iterate through columns
     for(var c = 0; c < 4; c++)
@@ -82,4 +82,37 @@ function checkHorizontalWin(boardToUse, pieceToFind)
     found: false,
     column: 0
   }
+}
+
+function checkVerticalWin(boardToUse, pieceToFind)
+{
+  //iterate through columns
+  for(var c = 0; c < COLUMN_MAX; c++)
+  {
+    var r = ROW_MAX - 1;
+    var count = 0;
+    while(InBorders(r, c) && boardToUse[r][c] != "null")
+    {
+      if(boardToUse[r][c] == pieceToFind)
+      {
+        count++;
+      }
+      else
+      {
+        count = 0;
+      }
+      r--;
+    }
+    if(count >= 3)
+    {
+      return{
+        found: true,
+        column: c
+      };
+    }
+  }
+  return{
+    found: false,
+    column: 1
+  };
 }
